@@ -8,6 +8,11 @@ A new table is created to address game releases across platforms to show major r
 * This project utilizes DB Browers(SQLite).
 * Download Here: https://sqlitebrowser.org/
 
+See Related Python Project: https://github.com/BradleyRossCodes/Video_Games_SQL
+
+See Related Tableau Project: https://public.tableau.com/app/profile/bradley.ross4451/viz/VideoGameSales2015_16869513475150/Dashboard1?publish=yes
+
+See Related Tableau Project: https://public.tableau.com/app/profile/bradley.ross4451/viz/VideoGameSales2015_16869513475150/Dashboard1?publish=yes
 
 It is important to note that this analysis is based on a specific time period and limited data. Generated results are only intended for the practice of concepts.
 
