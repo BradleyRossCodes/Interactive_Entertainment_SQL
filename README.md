@@ -1,4 +1,4 @@
-# Video_Games_SQL
+# Video Games SQL
 
 ## A sample SQL project reviewing Video Game Sales 
 
