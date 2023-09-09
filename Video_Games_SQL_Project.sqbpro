@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/bradl/OneDrive/Desktop/Job/SQL/video_game_data.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1964"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,18:maingame_releases_2015"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Game_Releases_2015" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort><column index="4" mode="1"/></sort><column_widths><column index="1" value="231"/><column index="2" value="46"/><column index="3" value="300"/><column index="4" value="128"/></column_widths><filter_values><column index="3" value="evol"/></filter_values><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Max_Mix_Games" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="63"/><column index="2" value="126"/><column index="3" value="124"/><column index="4" value="151"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Video_Game_Raw_Data" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="53"/><column index="2" value="300"/><column index="3" value="63"/><column index="4" value="46"/><column index="5" value="77"/><column index="6" value="231"/><column index="7" value="68"/><column index="8" value="65"/><column index="9" value="64"/><column index="10" value="87"/><column index="11" value="88"/><column index="12" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="game_releases_2015" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="231"/><column index="2" value="46"/><column index="3" value="300"/><column index="4" value="115"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="video_game_sales" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="78"/><column index="2" value="300"/><column index="3" value="63"/><column index="4" value="46"/><column index="5" value="77"/><column index="6" value="231"/><column index="7" value="144"/><column index="8" value="95"/><column index="9" value="85"/><column index="10" value="85"/><column index="11" value="87"/><column index="12" value="70"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="Total Data">-- Review of the Total Number of Games released by year.
+SELECT 
+	year, 
+	CAST(COUNT(game_name)AS INT)
+	AS 'total_games_released'
+FROM video_game_sales
+GROUP BY year
+HAVING COUNT(game_name)&gt;100
+ORDER BY year DESC;
+-- Based on available data 2015 is the most recent year with a decent data amount
+-- 2008 is also a good option with the highest total, but over 10 years old. </sql><sql name="Platform Year 2015">-- Summary of games released on Platforms including average and total sales in millions. 
+SELECT 
+	platform, 
+	year, 
+	COUNT(game_name) AS 'amount_games_released', 
+	ROUND(AVG(global_sales), 2) AS 'average_sales', 
+	ROUND(SUM(global_sales), 2) AS 'total_sales' 
+FROM video_game_sales
+WHERE year = 2015
+GROUP BY platform
+ORDER BY AVG(global_sales) DESC;</sql><sql name="Publishers Year 2015">
+-- Summary of games released by Publishers including total sales in millions. 
+
+SELECT 
+	publisher, 
+	COUNT(game_name) AS 'games_released', 
+	ROUND(SUM(global_sales), 2) AS 'total_sales' 
+FROM video_game_sales
+WHERE year = 2015
+GROUP BY publisher
+ORDER BY games_released DESC, total_sales DESC;</sql><sql name="Game Releases 2015 Table">-- Review of data shows, games with the same title released across multiple gaming platforms.
+-- Creates a Table that combines sales totals across platforms. 
+
+CREATE TABLE game_releases_2015 AS
+SELECT 
+	publisher, 
+	year, 
+	game_name, 
+	SUM(global_sales) AS 'sales_sum_2015' 
+FROM video_game_sales
+WHERE year = 2015
+GROUP BY game_name
+ORDER BY publisher DESC;</sql><sql name="Games Earning (Across Platorms)">
+--Global Sales totals for games released in 2015 using table that combines multi-platform releases. 
+
+SELECT 
+	game_name, 
+	publisher,  
+	sales_sum_2015
+FROM game_releases_2015
+ORDER BY sales_sum_2015 DESC;</sql><sql name="Publishers Multi-platform Year 2015">-- Summary of Publishers sales with multi platform releases including average and total sales in millions.
+SELECT 
+	publisher,  
+	COUNT(game_name) AS 'num_games', 
+	ROUND(AVG(sales_sum_2015), 2) AS 'pub_avg_sales', 
+	ROUND(SUM(sales_sum_2015), 2) AS 'pub_sum_sales'
+FROM game_releases_2015
+GROUP BY publisher
+ORDER BY pub_sum_sales DESC;</sql><current_tab id="5"/></tab_sql></sqlb_project>
