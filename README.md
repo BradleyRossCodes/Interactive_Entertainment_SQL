@@ -1,6 +1,6 @@
 # Video Games SQL
 
-## A sample SQL project reviewing Video Game Sales 
+## A SQL project reviewing Video Game Sales 
 
 Data highlighting major releases across platforms(Playstation 4,  Wii, etc.) and publishers (Electronic Arts, Take-Two, etc.. 
 A new table is created to address game releases across platforms to show major releases by publisher. 
