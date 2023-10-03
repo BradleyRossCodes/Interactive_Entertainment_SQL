@@ -1,4 +1,4 @@
-# Video Games SQL
+# Interactive Entertainment SQL
 
 ## A SQL project reviewing Video Game Sales 
 
